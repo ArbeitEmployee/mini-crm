@@ -63,7 +63,7 @@ const DealPayment = () => {
       return;
     }
 
-    const res = await fetch("http://localhost:3000/api/payments", {
+    const res = await fetch("http://localhost:3000/api/payment-plans", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

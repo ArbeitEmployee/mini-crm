@@ -9,7 +9,7 @@ import {
 const router = express.Router();
 
 // Specific route must come before the general "/"
-router.get("/payment-plans/:id", getPaymentPlanById);
+router.get("/:id", getPaymentPlanById);
 
 router.post("/", createPayment);
 router.get("/", getAllPayments);

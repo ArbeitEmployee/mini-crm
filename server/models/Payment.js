@@ -8,7 +8,9 @@ const installmentSchema = new mongoose.Schema({
     enum: ["Paid", "Unpaid"],
     default: "Unpaid",
   },
-});
+  paidAt: Date,
+  notes: String,
+}, { _id: true }); // Make sure _id is generated for each installment
 
 const paymentSchema = new mongoose.Schema({
   name: String,

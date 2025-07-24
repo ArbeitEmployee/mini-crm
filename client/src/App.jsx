@@ -24,7 +24,7 @@ function App() {
           <Route path="/installments/:paymentId" element={<InstallmentStatus />} />
           <Route path="/payment-table" element={<PaymentTable />} />
           <Route path="/add-payment" element={<AddInstallmentPayment />} />
-          <Route path="/payment-plan/:id" element={<ViewPaymentPlan />} />
+          <Route path="/payment-plans/:id" element={<ViewPaymentPlan />} />
         </Routes>
       </MainLayout>
     </Router>

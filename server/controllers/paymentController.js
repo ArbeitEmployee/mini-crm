@@ -1,18 +1,30 @@
 import Payment from "../models/Payment.js";
 
 // Utility function to generate installments
-const generateInstallments = (totalAmount, numberOfInstallments, startDate) => {
+const generateInstallments = (totalAmount, numberOfInstallments, startDate, customInstallments = []) => {
+  // If custom installments are provided and match the count, use them
+  if (customInstallments.length === numberOfInstallments) {
+    return customInstallments.map(inst => ({
+      amount: inst.amount,
+      dueDate: new Date(inst.dueDate),
+      status: inst.status || "Unpaid",
+      notes: inst.notes || ""
+    }));
+  }
+
+  // Otherwise generate equal installments
   const amountPerInstallment = totalAmount / numberOfInstallments;
   const installments = [];
 
   for (let i = 0; i < numberOfInstallments; i++) {
     const dueDate = new Date(startDate);
-    dueDate.setMonth(dueDate.getMonth() + i); // Next installment each month
+    dueDate.setMonth(dueDate.getMonth() + i);
 
     installments.push({
       amount: amountPerInstallment,
       dueDate,
       status: "Unpaid",
+      notes: ""
     });
   }
 
@@ -21,14 +33,19 @@ const generateInstallments = (totalAmount, numberOfInstallments, startDate) => {
 
 // ✅ Create a new payment plan
 export const createPayment = async (req, res) => {
-  const { name, email, totalAmount, numberOfInstallments, startDate } = req.body;
+  const { name, email, totalAmount, numberOfInstallments, startDate, installments: customInstallments } = req.body;
 
   if (!name || !email || !totalAmount || !numberOfInstallments || !startDate) {
     return res.status(400).json({ message: "All fields are required." });
   }
 
   try {
-    const installments = generateInstallments(totalAmount, numberOfInstallments, startDate);
+    const installments = generateInstallments(
+      totalAmount, 
+      numberOfInstallments, 
+      startDate,
+      customInstallments
+    );
 
     const payment = new Payment({
       name,
@@ -71,6 +88,7 @@ export const getPaymentPlanById = async (req, res) => {
 };
 
 // ✅ Mark a specific installment as paid
+
 export const markInstallmentPaid = async (req, res) => {
   const { paymentId, installmentId } = req.params;
 
@@ -82,10 +100,14 @@ export const markInstallmentPaid = async (req, res) => {
     if (!installment) return res.status(404).json({ message: "Installment not found" });
 
     installment.status = "Paid";
+    installment.paidAt = new Date(); // Add this line to track when it was paid
     await payment.save();
 
-    res.json({ message: "Installment marked as paid" });
+    res.json(payment); // Return the updated payment object
   } catch (err) {
     res.status(500).json({ message: "Error updating installment", error: err.message });
   }
 };
+
+
+

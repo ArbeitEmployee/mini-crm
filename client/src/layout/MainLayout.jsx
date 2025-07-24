@@ -1,7 +1,6 @@
 import { useState } from "react";
-import Footer from "../components/Footer";
 import { NavLink } from "react-router-dom";
-import { FaBars } from "react-icons/fa"; // for toggle icon
+import { FaBars } from "react-icons/fa";
 
 const MainLayout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
@@ -16,25 +15,29 @@ const MainLayout = ({ children }) => {
   const activeStyle = { backgroundColor: "rgba(45, 59, 95, 1)" };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Page Content Container */}
-      <div className="flex flex-grow" style={{ backgroundColor: "rgb(232, 234, 236)" }}>
+    <div className="flex flex-col min-h-screen p-6 bg-[rgb(144,153,152)]">
+      {/* Unified Container with Shadow */}
+      <div className="flex flex-grow rounded-xl shadow-2xl overflow-hidden">
         {/* Sidebar */}
         <aside
           className={`${
             collapsed ? "w-20" : "w-64"
-          } transition-all duration-300 p-4 min-h-full bg-[rgb(232,234,236)]`}
+          } transition-all duration-300 p-4 bg-[rgb(232,234,236)]`}
         >
           {/* Toggle button with ARBEIT label */}
           <div className="mb-4 flex items-center gap-2">
             <button
-              className="p-2 bg-white rounded shadow hover:bg-gray-100"
+              className="p-2 bg-gray-100 rounded shadow hover:bg-gray-200"
               onClick={toggleSidebar}
               title={collapsed ? "Expand" : "Collapse"}
             >
-              <FaBars />
+              <FaBars className="text-[rgba(45,59,95,1)]" />
             </button>
-            {!collapsed && <span className="text-lg font-bold text-[rgba(45,59,95,1)]">ARBEIT</span>}
+            {!collapsed && (
+              <span className="text-lg font-bold text-[rgba(45,59,95,1)]">
+                ARBEIT
+              </span>
+            )}
           </div>
 
           {/* Navigation */}
@@ -96,13 +99,12 @@ const MainLayout = ({ children }) => {
           </nav>
         </aside>
 
-        {/* Main Page Content */}
-        <main className="flex-grow p-6 mr-15 my-6 bg-white rounded-xl shadow">
+        {/* Main Content Area */}
+        <main className="flex-grow p-6 bg-white">
           {children}
         </main>
       </div>
 
-      <Footer />
     </div>
   );
 };

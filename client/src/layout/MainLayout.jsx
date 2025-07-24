@@ -9,29 +9,31 @@ const MainLayout = ({ children }) => {
     setCollapsed((prev) => !prev);
   };
 
-  const linkClass =
-    "flex items-center gap-2 px-3 py-2 rounded transition-colors duration-300 ease-in-out hover:bg-[rgba(45,59,95,1)] hover:text-white";
+  // Color definitions
+  const sidebarBg = "bg-[rgb(180,190,189)]";
+  const pageBg = "bg-[rgb(230,233,233)]";
+  const linkClass = "flex items-center gap-2 px-3 py-2 rounded transition-colors duration-300 ease-in-out hover:bg-[rgba(45,59,95,0.9)] hover:text-white";
   const activeClass = "text-white font-semibold";
-  const activeStyle = { backgroundColor: "rgba(45, 59, 95, 1)" };
+  const activeStyle = { backgroundColor: "rgba(45, 59, 95, 0.9)" };
 
   return (
-    <div className="flex flex-col min-h-screen p-6 bg-[rgb(144,153,152)]">
-      {/* Unified Container with Shadow */}
-      <div className="flex flex-grow rounded-xl shadow-2xl overflow-hidden">
+    <div className={`flex flex-col min-h-screen p-6 ${pageBg}`}>
+      {/* Unified Container */}
+      <div className="flex flex-grow rounded-xl shadow-lg overflow-hidden">
         {/* Sidebar */}
         <aside
           className={`${
             collapsed ? "w-20" : "w-64"
-          } transition-all duration-300 p-4 bg-[rgb(232,234,236)]`}
+          } transition-all duration-300 p-4 ${sidebarBg}`}
         >
-          {/* Toggle button with ARBEIT label */}
-          <div className="mb-4 flex items-center gap-2">
+          {/* Toggle button and logo - now perfectly aligned */}
+          <div className="ml-2 mb-4 flex items-center gap-3">
             <button
-              className="p-2 bg-gray-100 rounded shadow hover:bg-gray-200"
+              className="p-1.5 bg-white rounded-md shadow-sm hover:bg-gray-50 flex items-center justify-center"
               onClick={toggleSidebar}
               title={collapsed ? "Expand" : "Collapse"}
             >
-              <FaBars className="text-[rgba(45,59,95,1)]" />
+              <FaBars className="text-[rgba(45,59,95,1)] text-sm" />
             </button>
             {!collapsed && (
               <span className="text-lg font-bold text-[rgba(45,59,95,1)]">
@@ -53,6 +55,7 @@ const MainLayout = ({ children }) => {
               {!collapsed && <span>Dashboard</span>}
             </NavLink>
 
+            {/* Other nav links remain the same */}
             <NavLink
               to="/add-lead"
               className={({ isActive }) =>
@@ -104,7 +107,6 @@ const MainLayout = ({ children }) => {
           {children}
         </main>
       </div>
-
     </div>
   );
 };
